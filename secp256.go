@@ -82,6 +82,26 @@ func GenerateKeyPair() ([]byte, []byte) {
 	return pubkey, seckey
 }
 
+func GeneratePubKey(seckey []byte) ([]byte, error) {
+	pubkey_len := C.int(65)
+	const seckey_len = 32
+
+	var pubkey []byte = make([]byte, pubkey_len)
+
+	var pubkey_ptr *C.uchar = (*C.uchar)(unsafe.Pointer(&pubkey[0]))
+	var seckey_ptr *C.uchar = (*C.uchar)(unsafe.Pointer(&seckey[0]))
+
+	ret := C.secp256k1_ecdsa_pubkey_create(
+		pubkey_ptr, &pubkey_len,
+		seckey_ptr, 0)
+
+	if ret != C.int(1) {
+		return nil, errors.New("Unable to generate pubkey from seckey")
+	}
+
+	return pubkey, nil
+}
+
 /*
 *  Create a compact ECDSA signature (64 byte + recovery id).
 *  Returns: 1: signature created
@@ -103,7 +123,11 @@ int secp256k1_ecdsa_sign_compact(const unsigned char *msg, int msglen,
 */
 
 func Sign(msg []byte, seckey []byte) ([]byte, error) {
-	var nonce []byte = RandByte(32)
+	//var nonce []byte = RandByte(32)
+	nonce := make([]byte, 32)
+	for i := range msg {
+		nonce[i] = msg[i] ^ seckey[i]
+	}
 
 	var sig []byte = make([]byte, 65)
 	var recid C.int
