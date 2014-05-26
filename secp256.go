@@ -2,7 +2,9 @@ package secp256k1
 
 /*
 #cgo CFLAGS: -std=gnu99 -Wno-error
+#cgo darwin CFLAGS: -I/usr/local/include
 #cgo LDFLAGS: -lgmp
+#cgo darwin LDFLAGS: -L/usr/local/lib
 #define USE_FIELD_10X26
 #define USE_NUM_GMP
 #define USE_FIELD_INV_BUILTIN
