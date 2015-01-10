@@ -39,10 +39,10 @@ func CompactSigTest(sig []byte) {
 //test pubkey/private generation
 func Test_Secp256_01(t *testing.T) {
 	pubkey, seckey := GenerateKeyPair()
-	if VerifySeckeyValidity(seckey) != 1 {
+	if err := VerifySeckeyValidity(seckey); err != nil {
 		t.Fatal()
 	}
-	if VerifyPubkeyValidity(pubkey) != 1 {
+	if err := VerifyPubkeyValidity(pubkey); err != nil {
 		t.Fatal()
 	}
 }
@@ -56,7 +56,7 @@ func Test_Secp256_02s(t *testing.T) {
 	if sig == nil {
 		t.Fatal("Signature nil")
 	}
-	if len(pubkey) != 33 {
+	if len(pubkey) != 65 {
 		t.Fail()
 	}
 	if len(seckey) != 32 {
@@ -173,7 +173,7 @@ func randSig() []byte {
 func Test_Secp256_06a_alt0(t *testing.T) {
 	pubkey1, seckey := GenerateKeyPair()
 	msg := RandByte(32)
-	sig,_ := Sign(msg, seckey)
+	sig, _ := Sign(msg, seckey)
 
 	if sig == nil {
 		t.Fail()
