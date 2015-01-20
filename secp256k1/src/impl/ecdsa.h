@@ -149,6 +149,8 @@ int static secp256k1_ecdsa_sig_recover(const secp256k1_ecdsa_sig_t *sig, secp256
     secp256k1_num_mod_mul(&u2, &rn, &sig->s, &c->order);
     secp256k1_gej_t qj;
     secp256k1_ecmult(&qj, &xj, &u2, &u1);
+    if (secp256k1_gej_is_infinity(&qj))
+        return 0;
     secp256k1_ge_set_gej(pubkey, &qj);
     secp256k1_num_free(&rn);
     secp256k1_num_free(&u1);
