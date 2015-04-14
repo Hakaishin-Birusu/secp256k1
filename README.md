@@ -1,22 +1,5 @@
 secp256k1-go
 =======
 
-golang secp256k1 library
-
-Implements cryptographic operations for the secp256k1 ECDSA curve used by Bitcoin.
-
-Installing
-===
-```
-sudo apt-get install gmp-dev
-```
-
-Now compiles with cgo!
-
-Test
-===
-
-To run tests do
-```
-go tests
-```
+This repo has been deleted in favour of the maintained Ethereum version which can be found
+at [ethereum/go-ethereum/crypto/secp256k1](https://github.com/ethereum/go-ethereum/tree/develop/crypto/secp256k1)
